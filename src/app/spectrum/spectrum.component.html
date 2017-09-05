@@ -1,0 +1,32 @@
+<md-toolbar md-dialog-title style="color:floralwhite; font-size:150%" 
+  [ngStyle]="toolbars[themeId]">
+  {{ persthemes[themeId].title }}
+  <span class="flex-spacer"></span>
+  <button md-button md-dialog-close>&times;</button>
+</md-toolbar>
+
+<md-dialog-content fxLayout="column" fxLayoutGap="20px">
+  <div fxFlex>
+    <p style="text-align:center">{{ persthemes[themeId].themeDescQuest }}</p>
+  </div>
+  <div fxFlex>
+    <table class="dialog-size" style="text-align:center; table-layout:fixed">
+      <tr>
+        <td>If you ...<br>{{ relevantDimens[0].description }}</td>
+        <td>If you ...<br>{{ relevantDimens[1].description }}</td>
+      </tr>
+      <tr></tr>
+      <tr>
+        <th>... then you prefer<br>
+          <h1>{{ relevantDimens[0].name }}</h1>
+          {{ relevantDimens[0].title }}
+        </th>
+        <th>... then you prefer<br>
+          <h1>{{ relevantDimens[1].name }}</h1>
+          {{ relevantDimens[1].title }}
+        </th>
+      </tr>
+     
+    </table>
+  </div>
+</md-dialog-content>

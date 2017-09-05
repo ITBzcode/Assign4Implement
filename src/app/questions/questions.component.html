@@ -1,0 +1,178 @@
+<div class="container2"
+  fxLayout="row"
+  fxLayoutGap="20px">
+
+  <div fxFlex="25" class="persdescBox">
+      <h2>Target: {{ptype.name}}</h2>
+      <p>{{ptype.descriptors | uppercase}}</p>
+      <p>{{ptype.tooltipDesc}}</p>
+  </div>
+  <div fxFlex="55">
+    <h3>{{getdimenfromId(ptype.dimFAVW).title}} ** {{getdimenfromId(ptype.dimINFO).title}} ** {{getdimenfromId(ptype.dimDECI).title}} ** {{getdimenfromId(ptype.dimSTRC).title}}</h3>
+    <hr>
+    <p>{{ptype.longDesc}}</p>
+    <hr>
+    <p>{{ptype.briefDesc}}</p>
+  </div>
+  <div fxFlex="20" fxLayoutAlign="left center">
+    <img src={{ptype.image}}>
+  </div>
+</div>
+
+<div class="container2"
+  fxLayout="column"
+  fxLayoutGap="0px">
+  <div fxFlex="100"><hr><hr></div>
+</div>
+
+<div class="container2"
+  fxLayout="row"
+  fxLayoutGap="20px">
+  <!-- the button navigation group -->
+  <div fxFlex="14"
+    fxLayout="column">
+    <div fxFlex="100"
+      mdTooltip="ORANGE BUTTON = QUESTIONS DONE"
+      mdTooltipPosition="above">
+      <button *ngFor="let bt of btnstatus; let i = index"
+          class="btn-wip" [ngStyle]="btnprogress[btnstatus[i]]"
+        (click)="setqBlock(i)">
+          {{(i*5)+1<9 ? '0': ''}}{{(i*5)+1}}
+          - {{(i*5)+5<9 ? '0': ''}}{{(i*5)+5}}
+      </button>
+    </div>
+    <div fxFlex="100" style="font-size:10px">
+      <br><br>
+      user ref: {{ this.scorenum }}
+    </div>
+  </div>
+
+  <!-- the question matrix -->
+  <div fxFlex="86"
+    fxLayout="column">
+    <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+      
+      <table>
+        <caption>
+          <i>Answer all 70 questions. Use buttons at left to navigate.  
+            <div [hidden]="!(hintsOn)">
+              "Correct" answers for 
+              <span style="font-weight:bold">{{ptype.name}}</span> are 
+              <span [ngStyle]="accentset[1]">accented</span>
+            </div>
+          </i>
+        </caption>
+        <tr>
+          <th class="quest">Question</th>
+          <th>Options</th>
+        </tr>
+        <tr *ngFor="let aQuest of allQuestns; let i = index"
+          [hidden]="!(allQuestns[i].qGrp === qGroup)">
+          <td [hidden]="!(hintsOn)"
+            [ngStyle]="toolbars[allQuestns[i].theme]" 
+            style="color:floralwhite; font-weight:bold">
+            {{allQuestns[i].qNum}} -- {{allQuestns[i].question}}
+          </td>
+          <td [hidden]="hintsOn" 
+          style="color:black; font-weight:bold">
+          {{allQuestns[i].qNum}} -- {{allQuestns[i].question}}
+        </td>
+          <md-radio-group formControlName="{{qformname[i]}}"
+            (click)="setButtonStatus()">
+            <td [ngStyle]="getAccentforA(i)">
+              
+                <md-radio-button value="a" >
+                  {{allQuestns[i].aAnswer}}
+                  
+                </md-radio-button>
+              
+            </td>
+            <td [ngStyle]="getAccentforB(i)">
+              
+                <md-radio-button value="b">
+                  {{allQuestns[i].bAnswer}}
+                  
+                </md-radio-button>
+              
+            </td>
+          </md-radio-group>
+        </tr>
+      </table>
+
+      <!-- the hints button -->
+      <div fxLayoutAlign="space-around center">
+        <md-slide-toggle (click)="resetHint()">
+          {{ hintsOn ? 'Turn OFF Hints' : 'Turn ON Hints' }}
+        </md-slide-toggle>
+
+        <!-- this first one should NOT have the "!" -->
+        <span [hidden]="checkButtonInvalidity()">
+          <button
+            type="submit" md-button
+            class="background-primary text-floral-white">
+            Submit
+          </button>
+        </span>
+        <span [hidden]="!checkButtonInvalidity()">
+          <button
+            type="submit" md-button
+            class="background-pale text-floral-white"
+            disabled>
+            Submit
+          </button>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="container3"
+  fxLayout="column"
+  fxLayoutGap="0px">
+<div fxFlex="100"><hr></div>
+</div>
+
+<!-- personality dimension buttons across the bottom  -->
+<div class="container2"> 
+    
+  <div fxFlex="100" fxLayoutAlign="space-around center" class="flex-btns">
+    <button *ngFor="let perst of persthemes; let i = index"
+      md-button md-raised-button style="color:white" [ngStyle]="toolbars[i]"
+      (click)="openSpectrum(i)"
+      mdTooltip="CLICK HERE FOR MORE INFO ON: '{{ perst.title | uppercase }}'"
+      mdTooltipPosition="above">
+        {{ perst.title }}                           
+    </button>
+  </div>
+
+</div>
+
+<!--
+ -- the hints button --
+ <div fxLayoutAlign="space-around center">
+    <md-slide-toggle (click)="resetHint()">
+      {{ hintsOn ? 'Turn OFF Hints' : 'Turn ON Hints' }}
+    </md-slide-toggle>
+  </div>
+  
+  -- this first one should NOT have the "!" --
+  <div [hidden]="!checkButtonInvalidity()">
+    <div fxLayoutAlign="space-around center">
+      <button
+        type="submit" md-button
+        class="background-primary text-floral-white">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div [hidden]="!checkButtonInvalidity()">
+    <div fxLayoutAlign="space-around center">
+      <button
+        type="submit" md-button
+        class="background-pale text-floral-white"
+        disabled>
+        Submit
+      </button>
+    </div>
+  </div>
+-->

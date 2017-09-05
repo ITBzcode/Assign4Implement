@@ -1,0 +1,132 @@
+<div class="container3"
+  fxLayout="column"
+  fxLayoutAlign="space-around center"
+  fxLayoutGap="2px">
+  <h1>
+      Review Your Results for Target {{ ptype.name }}
+  </h1>
+  <h3>
+    Targeted themes: {{ dimentitles[ptype.dimFAVW] }}, 
+                    {{ dimentitles[ptype.dimINFO] }}, 
+                    {{ dimentitles[ptype.dimDECI] }}, 
+                    {{ dimentitles[ptype.dimSTRC] }}
+  </h3>
+</div>
+
+<div class="container"
+  fxLayout="row"
+  fxLayoutGap="5px">
+
+  <div fxFlex="14"
+    fxLayout="column"
+    fxLayoutAlign="center center">
+    <h2 style="text-align:center">Target Personality</h2>
+    <img src="{{ptype.image}}" alt="target personality" 
+      height="100" width="100"
+      (click)="openPerson(ptype.id)">
+    <h4 style="text-align:center">{{ ptype.name }}</h4>
+    ----------------<br>
+    <h2 style="text-align:center; color:#FFC107"
+      [hidden]="recalcNeeded">Your Actual personality</h2>
+    <div [hidden]="recalcNeeded">
+      <div *ngIf="yourtype">
+        <img src="{{yourtype.image}}" alt="your personality" 
+          height="100"  width="100" 
+          (click)="openPerson(yourtype.id)">
+        <h4 style="text-align:center">{{ yourtype.name }}</h4>
+      </div>
+    </div>
+    <div [hidden]="setThemeNeeded">
+      <div [hidden]="!(recalcNeeded)">
+          <button md-button md-raised-button style="color:white; background-color:#673AB7" 
+            (click)="calculatePtype(scoresheetForm.value)"
+            mdTooltip="CLICK TO CALCULATE YOUR PERSONALITY TYPE"
+            mdTooltipPosition="above">
+            CALC TYPE                           
+        </button>
+      </div>
+    </div>
+    <div [hidden]="scoresheet">
+        <md-spinner></md-spinner><h4>Loading scoresheet ... please wait</h4>
+    </div>
+  </div>
+
+  <div fxFlex="86"
+    fxLayout="column"
+    fxLayoutGap="5px">
+    <div fxFlex="100"
+      fxLayout="column">
+      <form novalidate [formGroup]="scoresheetForm">
+        <table [hidden]="setThemeNeeded">
+          <caption>
+            <i>"Correct" answers for targeted 
+              <span style="font-weight:bold">
+                {{ dimens[ptypedimens[qTheme]].title }}
+                </span> in theme 
+              <span style="color:floralwhite; padding:5px 0px;" [ngStyle]="toolbars[qTheme]">
+                &nbsp;{{ persthemes[qTheme].title }}&nbsp;
+              </span> are 
+              <span [ngStyle]="accentset[1]">accented</span>
+            </i>
+          </caption>
+          <tr>
+            <th class="quest">Question</th>
+            <th>Options</th>
+          </tr>
+          <tr *ngFor="let aQuest of themedQuestns; let i = index">
+            <td [ngStyle]="toolbars[themedQuestns[i].theme]" 
+              style="color:floralwhite; font-weight:bold">
+              {{themedQuestns[i].qNum}} -- {{themedQuestns[i].question}}
+            </td>
+            <md-radio-group formControlName="{{qformname[themedQuestns[i].qNum - 1]}}">
+              <td [ngStyle]="getAccentforA(i)">
+                  <md-radio-button value="a" 
+                  (click)="resetRecalc(qformname[themedQuestns[i].qNum - 1],'a')">
+                    {{themedQuestns[i].aAnswer}}
+                  </md-radio-button>
+              </td>
+              <td [ngStyle]="getAccentforB(i)">
+                  <md-radio-button value="b" 
+                  (click)="resetRecalc(qformname[themedQuestns[i].qNum - 1],'b')">
+                    {{themedQuestns[i].bAnswer}}
+                  </md-radio-button>
+              </td>
+            </md-radio-group>
+          </tr>
+        </table>
+
+        <div [hidden]="setThemeNeeded" style="text-align:center">
+          Your answers for
+          <span style="color:floralwhite; padding:5px 0px;" [ngStyle]="toolbars[qTheme]">
+              &nbsp;{{ persthemes[qTheme].title }}
+          </span> 
+          &nbsp;indicate 
+          <u>{{getThemeYDimen(qTheme)}}</u>
+          {{ getThemeYIndex(qTheme) === ptypedimens[qTheme] ? '-- Great!' : '-- Sorry.'}}
+        </div>
+
+        <div [hidden]="!(setThemeNeeded)" style="text-align:center">
+          <br><br>
+          YOU MUST FIRST SELECT A THEME BY CLICKING A BUTTON BELOW<br>
+          IN ORDER TO REVIEW YOUR ANSWERS
+        </div>
+      </form>
+    </div>
+    
+  </div>
+  
+</div>
+
+<div class="container">
+    <div fxFlex="95"
+      fxLayoutAlign="space-around start"
+      class="flex-btns">
+      <button *ngFor="let perst of persthemes; let i = index"
+        md-button md-raised-button style="color:white" [ngStyle]="toolbars[i]"
+        (click)="setTheme(i)"
+        mdTooltip="CLICK HERE TO FOCUS ON QUESTIONS FOR: '{{ perst.title | uppercase }}'"
+        mdTooltipPosition="above">
+          {{ perst.title }}                           
+      </button>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="container"
+  fxLayout="row"
+  fxLayoutGap="0px">
+
+    <div fxFlex="10"></div>
+    <div fxFlex="80">
+      <md-grid-list cols="4" rowHeight="150px">
+        <md-grid-tile *ngFor="let ptype of personalities; let i = index;"
+          [routerLink]="['/questions', ptype.id]" appHighlight>
+          <div 
+            mdTooltip="CLICK HERE TO TARGET {{ptype.name}}: {{dimentitles[ptype.dimFAVW] | uppercase}} {{dimentitles[ptype.dimINFO] | uppercase}} 
+            {{dimentitles[ptype.dimDECI] | uppercase}} {{dimentitles[ptype.dimSTRC] | uppercase}}" 
+            mdTooltipPosition="{{(i%4 < 2) ? 'right': 'left'}}">
+            <img height="110px" src={{ptype.image}} alt={{ptype.name}}>
+            <md-grid-tile-header>
+              <h1 md-line style="font-weight:bold; font-size:200%;">
+                {{ptype.name}}
+              </h1>
+            </md-grid-tile-header>
+            <md-grid-tile-footer>
+              {{ptype.descriptors | uppercase}}
+            </md-grid-tile-footer>
+          </div>
+        </md-grid-tile>
+      </md-grid-list>
+    </div>
+    <div fxFlex="10"></div>
+
+</div>
+
+<div class="container"> 
+
+  <div fxFlex="100" fxLayoutAlign="space-around center" class="flex-btns">
+    <button *ngFor="let perst of persthemes; let i = index"
+      md-button md-raised-button style="color:white" [ngStyle]="toolbars[i]"
+      (click)="openSpectrum(i)"
+      mdTooltip="CLICK HERE FOR MORE INFO ON: '{{ perst.title | uppercase }}'">
+        {{ perst.title }}                           
+    </button>
+  </div>
+
+</div>

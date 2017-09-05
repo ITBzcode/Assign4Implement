@@ -1,0 +1,27 @@
+<md-toolbar md-dialog-title class="background-primary" 
+  style="color:floralwhite; font-size:150%">
+  {{ ptype.name }}
+  <span class="flex-spacer"></span>
+  <button md-button md-dialog-close>&times;</button>
+</md-toolbar>
+
+<md-dialog-content>
+  <div fxLayout="row"
+    fxLayoutGap="20px">
+
+    <div fxFlex="27" class="persdescBox">
+        <h2>{{ptype.descriptors | uppercase}}</h2>
+        <p>{{ptype.tooltipDesc}}</p>
+    </div>
+    <div fxFlex="53">
+      <h3>{{getdimenfromId(ptype.dimFAVW).title}} ** {{getdimenfromId(ptype.dimINFO).title}} ** {{getdimenfromId(ptype.dimDECI).title}} ** {{getdimenfromId(ptype.dimSTRC).title}}</h3>
+      <hr>
+      <p>{{ptype.longDesc}}</p>
+      <hr>
+      <p>{{ptype.briefDesc}}</p>
+    </div>
+    <div fxFlex="20" fxLayoutAlign="left center">
+      <img src={{ptype.image}}>
+    </div>
+  </div>
+</md-dialog-content>
